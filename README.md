@@ -50,4 +50,6 @@ The following credentials are seeded into the database for testing:
   - Username: `admin`
   - Password: `admin123`
 
+## AI Assistance
+This project utilized AI tools for code documentation and Thymeleaf templating. The AI was used to generate Javadoc comments for the Java classes, enhancing code readability and maintainability. Additionally, it assisted in creating Thymeleaf templates for rendering dynamic web pages.
 
