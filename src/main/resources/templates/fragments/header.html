@@ -1,0 +1,22 @@
+<!-- templates/fragments/header.html -->
+<body xmlns:sec="http://www.w3.org/1999/xhtml">
+<header>
+    <nav>
+        <ul>
+            <li><a th:href="@{/}">Home</a></li>
+            <li sec:authorize="isAuthenticated()">
+                <a th:href="@{/products}">Catalog</a>
+            </li>
+            <li sec:authorize="isAuthenticated()">
+                <a th:href="@{/cart}">Cart</a>
+            </li>
+
+            <li sec:authorize="!isAuthenticated()">
+                <a th:href="@{/login}">Login</a>
+            </li>
+            <li sec:authorize="isAuthenticated()">
+                <a th:href="@{/logout}">Logout</a>
+            </li>
+        </ul>
+    </nav>
+</header>

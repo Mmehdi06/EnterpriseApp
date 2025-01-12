@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_DB: EnterpriseApp
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - enterpriseapp-pgdata:/var/lib/postgresql/data
+
+volumes:
+  enterpriseapp-pgdata:

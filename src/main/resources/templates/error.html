@@ -1,0 +1,20 @@
+<!-- templates/error.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head">
+    <title>Error - Equipment Rental</title>
+</head>
+<body>
+<header th:replace="fragments/header :: header"></header>
+
+<main>
+    <section class="error-section">
+        <h2>Oops! Something went wrong.</h2>
+        <p>We're sorry, but an unexpected error has occurred.</p>
+        <p>Please try refreshing the page, or <a th:href="@{/}">click here</a> to return to the home page.</p>
+        <p>If the problem persists, please contact our support team.</p>
+    </section>
+</main>
+
+</body>
+</html>

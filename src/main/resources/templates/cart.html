@@ -1,0 +1,54 @@
+<!-- templates/cart.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head">
+    <title>Shopping Cart - Equipment Rental</title>
+</head>
+<body>
+<header th:replace="fragments/header :: header"></header>
+
+<main>
+    <h2>Your Shopping Cart</h2>
+    <div th:if="${#lists.isEmpty(cartItems)}">
+        <p>Your cart is empty.</p>
+        <a th:href="@{/products}" class="btn">Continue Shopping</a>
+    </div>
+    <div th:if="${!#lists.isEmpty(cartItems)}">
+        <table>
+            <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price per Day</th>
+                <th>Total Price</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${cartItems}">
+                <td th:text="${item.product.name}">Product Name</td>
+                <td th:text="${item.quantity}">1</td>
+                <td>$<span th:text="${item.product.price}">0.00</span></td>
+                <td>$<span th:text="${item.quantity * item.product.price}">0.00</span></td>
+                <td>
+                    <form th:action="@{/cart/remove/{cartItemId}(cartItemId=${item.id})}" method="post" style="display:inline;">
+                        <input type="hidden" name="userId" th:value="${item.user.id}">
+                        <button type="submit">Remove</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="cart-actions">
+            <form th:action="@{/cart/checkout}" method="post">
+                <input type="hidden" name="userId" th:value="${cartItems[0].user.id}">
+                <button type="submit">Proceed to Checkout</button>
+            </form>
+
+            <a th:href="@{/products}" class="btn">Continue Shopping</a>
+        </div>
+    </div>
+</main>
+
+</body>
+</html>

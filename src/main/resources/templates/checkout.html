@@ -1,0 +1,17 @@
+<!-- templates/checkout.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head">
+    <title>Checkout - Equipment Rental</title>
+</head>
+<body>
+<header th:replace="fragments/header :: header"></header>
+
+<main>
+    <h2>Order Confirmation</h2>
+    <p>Thank you for your order! Your rental request has been received.</p>
+    <a th:href="@{/products}" class="btn">Back to Catalog</a>
+</main>
+
+</body>
+</html>

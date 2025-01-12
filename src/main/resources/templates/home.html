@@ -1,0 +1,17 @@
+<!-- templates/home.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments/head :: head">
+    <title>Home - Equipment Rental</title>
+</head>
+<body>
+<header th:replace="fragments/header :: header"></header>
+
+<main>
+    <h1>Welcome to the Equipment Rental Platform</h1>
+    <p>Explore a variety of equipment for your projects.</p>
+    <a th:href="@{/products}" class="btn">View Catalog</a>
+</main>
+
+</body>
+</html>
