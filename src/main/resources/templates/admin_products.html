@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head">
+    <title>Admin - Manage Products</title>
+</head>
+<body>
+<header th:replace="fragments/header :: header"></header>
+
+<main>
+    <h2>Admin - Manage Products</h2>
+
+    <!-- Success message after adding a product -->
+    <p th:if="${param.success}" style="color: green;">Product added successfully!</p>
+    <p th:if="${param.stockUpdated}" style="color: green;">Stock updated successfully!</p>
+    <p th:if="${param.error}" style="color: red;" th:text="${param.error}"></p>
+
+    <!-- Form to add a new product -->
+    <h3>Add a New Product</h3>
+    <form th:action="@{/admin/products/add}" method="post">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="description">Description:</label>
+        <input type="text" id="description" name="description" required>
+
+        <label for="price">Price:</label>
+        <input type="number" id="price" name="price" step="0.01" required>
+
+        <label for="quantity">Quantity:</label>
+        <input type="number" id="quantity" name="quantity" min="1" required>
+
+        <label for="category">Category:</label>
+        <select id="category" name="category.id" required>
+            <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+        </select>
+
+        <button type="submit" class="btn">Add Product</button>
+    </form>
+
+    <!-- List of existing products with stock management -->
+    <h3>Existing Products</h3>
+    <table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Category</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product : ${products}">
+            <td th:text="${product.name}">Product Name</td>
+            <td th:text="${product.description}">Product Description</td>
+            <td>$<span th:text="${product.price}">0.00</span></td>
+            <td th:text="${product.quantity}">0</td>
+            <td th:text="${product.category.name}">Category Name</td>
+            <td>
+                <!-- Form to update stock -->
+                <form th:action="@{/admin/products/update-stock}" method="post" class="stock-form">
+                    <input type="hidden" name="productId" th:value="${product.id}">
+                    <div class="stock-update-group">
+                        <button type="button" class="btn-stock btn-minus">-</button>
+                        <input type="number" name="quantityChange" value="0" class="stock-input" required>
+                        <button type="button" class="btn-stock btn-plus">+</button>
+                        <button type="submit" class="btn-save">Save</button>
+                    </div>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</main>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const minusButtons = document.querySelectorAll(".btn-minus");
+        const plusButtons = document.querySelectorAll(".btn-plus");
+
+        minusButtons.forEach((button) => {
+            button.addEventListener("click", function () {
+                const input = this.parentElement.querySelector(".stock-input");
+                let value = parseInt(input.value);
+                input.value = value - 1; // Allow negative values for removal
+            });
+        });
+
+        plusButtons.forEach((button) => {
+            button.addEventListener("click", function () {
+                const input = this.parentElement.querySelector(".stock-input");
+                let value = parseInt(input.value);
+                input.value = value + 1;
+            });
+        });
+    });
+</script>
+
+</body>
+</html>

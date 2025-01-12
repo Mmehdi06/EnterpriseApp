@@ -21,12 +21,14 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        http.authorizeHttpRequests(request -> request.requestMatchers("/", "/login", "/register", "/css/**", "/js/**", "/images/**", "/error").permitAll()
+        http.authorizeHttpRequests(request -> request
+                        .requestMatchers("/", "/login", "/register", "/css/**", "/js/**", "/images/**", "/error").permitAll()
+                        .requestMatchers("/admin/**").hasRole("ADMIN") // Admin-only pages
                         .anyRequest().authenticated())
                 .formLogin(form -> form.loginPage("/login")
                         .defaultSuccessUrl("/products", true)
                         .permitAll())
-                .logout(LogoutConfigurer::permitAll);
+                .logout(logout -> logout.logoutUrl("/logout").permitAll());
         return http.build();
     }
 

@@ -3,19 +3,36 @@
 <header>
     <nav>
         <ul>
+            <!-- Home link (available to everyone) -->
             <li><a th:href="@{/}">Home</a></li>
+
+            <!-- Catalog link (available only to authenticated users) -->
             <li sec:authorize="isAuthenticated()">
                 <a th:href="@{/products}">Catalog</a>
             </li>
+
+            <!-- Cart link (available only to authenticated users) -->
             <li sec:authorize="isAuthenticated()">
                 <a th:href="@{/cart}">Cart</a>
             </li>
 
+            <!-- Admin route (available only to users with ADMIN role) -->
+            <li sec:authorize="hasRole('ADMIN')">
+                <a th:href="@{/admin/products}">Admin</a>
+            </li>
+
+            <!-- Login link (available only to unauthenticated users) -->
             <li sec:authorize="!isAuthenticated()">
                 <a th:href="@{/login}">Login</a>
             </li>
+
+            <!-- Logout form (available only to authenticated users) -->
             <li sec:authorize="isAuthenticated()">
-                <a th:href="@{/logout}">Logout</a>
+                <form th:action="@{/logout}" method="post" style="display: inline;">
+                    <button type="submit" class="btn-nav" style="background: none; border: none; color: blue; cursor: pointer;">
+                        Logout
+                    </button>
+                </form>
             </li>
         </ul>
     </nav>
