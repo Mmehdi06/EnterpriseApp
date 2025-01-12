@@ -25,7 +25,7 @@ Make sure you have the following installed on your machine:
 
 ```bash
 git clone https://github.com/Mmehdi06/EnterpriseApp.git
-cd yEnterpriseApp
+cd EnterpriseApp
 ```
 ### Setup Database
 ```bash
