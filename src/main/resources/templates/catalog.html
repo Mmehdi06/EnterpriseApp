@@ -1,4 +1,3 @@
-<!-- templates/catalog.html -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/head :: head">
@@ -11,10 +10,13 @@
     <h2>Product Catalog</h2>
     <aside>
         <h3>Categories</h3>
-        <ul>
-            <li><a th:href="@{/products}">All</a></li>
+        <ul class="category-list">
+            <li>
+                <a th:href="@{/products}" class="category-btn">All</a>
+            </li>
+
             <li th:each="category : ${categories}">
-                <a th:href="@{/products(category=${category.name})}" th:text="${category.name}"></a>
+                <a th:href="@{/products(category=${category.name})}" th:text="${category.name}" class="category-btn"></a>
             </li>
         </ul>
     </aside>

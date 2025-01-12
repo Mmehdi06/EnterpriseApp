@@ -15,11 +15,20 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping
-    public String getAllProducts(Model model) {
-        List<Product> products = productService.getAllProducts();
+    public String getAllProducts(@RequestParam(value = "category", required = false) String categoryName, Model model) {
+        List<Product> products;
+
+        if (categoryName != null && !categoryName.isEmpty()) {
+            products = productService.getProductsByCategory(categoryName);
+        } else {
+            products = productService.getAllProducts();
+        }
+
         model.addAttribute("products", products);
+        model.addAttribute("categories", productService.getAllCategories()); // For displaying categories in the sidebar
         return "catalog";
     }
+
 
     @GetMapping("/{id}")
     public String getProductById(@PathVariable Long id, Model model) {

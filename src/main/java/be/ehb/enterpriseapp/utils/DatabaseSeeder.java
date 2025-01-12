@@ -13,7 +13,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import jakarta.annotation.PostConstruct;
 
-import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -41,43 +40,46 @@ public class DatabaseSeeder implements CommandLineRunner {
             System.out.println("Database already seeded, skipping seeding.");
             return;
         }
+
         // Encrypt passwords using BCryptPasswordEncoder
         String adminPassword = passwordEncoder.encode("admin123");
         String userPassword = passwordEncoder.encode("user123");
+
         // Seed Users
-        User admin = new User( "admin", adminPassword, UserRole.ADMIN);
-        User user = new User( "user", userPassword, UserRole.USER);
+        User admin = new User("admin", adminPassword, UserRole.ADMIN);
+        User user = new User("user", userPassword, UserRole.USER);
         userRepository.saveAll(Arrays.asList(admin, user));
 
         // Seed Categories and store them in a map for easy lookup
         Map<String, Category> categoryMap = new HashMap<>();
-        categoryMap.put("Electronics", categoryRepository.save(new Category( "Electronics")));
-        categoryMap.put("Clothing", categoryRepository.save(new Category( "Clothing")));
-        categoryMap.put("Home Appliances", categoryRepository.save(new Category( "Home Appliances")));
-        categoryMap.put("Books", categoryRepository.save(new Category("Books")));
-        categoryMap.put("Sports", categoryRepository.save(new Category( "Sports & Outdoors")));
+        categoryMap.put("Lighting", categoryRepository.save(new Category("Lighting")));
+        categoryMap.put("Stage Elements", categoryRepository.save(new Category("Stage Elements")));
+        categoryMap.put("Audio", categoryRepository.save(new Category("Audio")));
+        categoryMap.put("Cables", categoryRepository.save(new Category("Cables")));
+        categoryMap.put("Accessories", categoryRepository.save(new Category("Accessories")));
 
         // Seed Products using the saved categories
         productRepository.saveAll(List.of(
-                new Product( "Smartphone", "A high-end smartphone with a great camera.", 699.99, 50, categoryMap.get("Electronics")),
-                new Product( "Laptop", "A powerful laptop for work and gaming.", 999.99, 30, categoryMap.get("Electronics")),
-                new Product( "4K TV", "A large 4K Ultra HD television.", 1299.99, 20, categoryMap.get("Electronics")),
+                // Lighting products
+                new Product("LED Panel Light", "A bright LED panel for studio lighting.", 50.00, 10, categoryMap.get("Lighting")),
+                new Product("Stage Spotlight", "A powerful spotlight for stage use.", 75.00, 5, categoryMap.get("Lighting")),
 
-                new Product( "T-shirt", "Comfortable cotton T-shirt.", 19.99, 100, categoryMap.get("Clothing")),
-                new Product( "Jeans", "Stylish and durable denim jeans.", 49.99, 60, categoryMap.get("Clothing")),
-                new Product( "Jacket", "Warm winter jacket.", 89.99, 40, categoryMap.get("Clothing")),
+                // Stage elements
+                new Product("Stage Platform", "Modular stage platform, 2x2 meters.", 100.00, 8, categoryMap.get("Stage Elements")),
+                new Product("Truss System", "Aluminum truss for stage setup.", 150.00, 4, categoryMap.get("Stage Elements")),
 
-                new Product( "Blender", "A high-speed blender for smoothies.", 39.99, 25, categoryMap.get("Home Appliances")),
-                new Product( "Microwave", "A compact microwave oven.", 199.99, 15, categoryMap.get("Home Appliances")),
-                new Product( "Vacuum Cleaner", "A powerful vacuum cleaner.", 149.99, 10, categoryMap.get("Home Appliances")),
+                // Audio products
+                new Product("Mixer Console", "16-channel audio mixer console.", 200.00, 2, categoryMap.get("Audio")),
+                new Product("Speaker", "High-power speaker for events.", 120.00, 6, categoryMap.get("Audio")),
+                new Product("Microphone", "Wireless microphone for performances.", 40.00, 20, categoryMap.get("Audio")),
 
-                new Product( "Fiction Novel", "An engaging fiction novel.", 14.99, 70, categoryMap.get("Books")),
-                new Product( "Science Textbook", "A comprehensive science textbook.", 49.99, 50, categoryMap.get("Books")),
-                new Product( "Cookbook", "A collection of delicious recipes.", 24.99, 40, categoryMap.get("Books")),
+                // Cables
+                new Product("XLR Cable", "10-meter XLR audio cable.", 10.00, 50, categoryMap.get("Cables")),
+                new Product("HDMI Cable", "5-meter HDMI cable for video.", 15.00, 30, categoryMap.get("Cables")),
 
-                new Product( "Football", "Standard size football.", 29.99, 80, categoryMap.get("Sports")),
-                new Product( "Mountain Bike", "A durable mountain bike.", 499.99, 5, categoryMap.get("Sports")),
-                new Product( "Yoga Mat", "A non-slip yoga mat.", 19.99, 100, categoryMap.get("Sports"))
+                // Accessories
+                new Product("Gaffer Tape", "Durable gaffer tape for stage setup.", 5.00, 100, categoryMap.get("Accessories")),
+                new Product("Sandbag", "Weight sandbag for lighting stands.", 10.00, 25, categoryMap.get("Accessories"))
         ));
 
         System.out.println("Database seeding completed!");
@@ -88,4 +90,3 @@ public class DatabaseSeeder implements CommandLineRunner {
         seedDatabase();
     }
 }
-
