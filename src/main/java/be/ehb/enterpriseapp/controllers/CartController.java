@@ -46,7 +46,18 @@ public class CartController {
     }
 
     @PostMapping("/add")
-    public String addCartItem(@ModelAttribute CartItem cartItem, @RequestParam Long productId) {
+    public String addCartItem(@ModelAttribute CartItem cartItem, @RequestParam Long productId, @RequestParam int quantity, Model model) {
+
+        // Check if the product exists
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+        if (quantity > product.getQuantity()) {
+            model.addAttribute("error", "Requested quantity exceeds available stock.");
+            model.addAttribute("product", product);
+            return "product_detail"; // Return to the product detail page with an error message
+        }
+
+
         // Fetch the logged-in user from the security context
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName(); // Get username of the logged-in user
@@ -74,12 +85,37 @@ public class CartController {
         return "redirect:/cart/user/" + userId;
     }
 
+//    @PostMapping("/checkout")
+//    public String checkout(Model model, @RequestParam Long userId) {
+//        User user = userRepository.getReferenceById(userId);
+//        cartService.checkout(user);
+//        model.addAttribute("cartItems", cartService.getCartItemsByUser(user));
+//        return "checkout";
+//    }
+
     @PostMapping("/checkout")
-    public String checkout(Model model, @RequestParam Long userId) {
+    public String showCheckoutPage(@RequestParam Long userId, Model model) {
         User user = userRepository.getReferenceById(userId);
-        cartService.checkout(user);
-        model.addAttribute("cartItems", cartService.getCartItemsByUser(user));
-        return "checkout";
+        List<CartItem> cartItems = cartService.getCartItemsByUser(user);
+
+        double totalPrice = cartService.calculateTotalPrice(cartItems);
+
+        model.addAttribute("cartItems", cartItems);
+        model.addAttribute("totalPrice", totalPrice);
+        model.addAttribute("userId", userId);
+        return "checkout"; // Return the checkout page
+    }
+
+    @PostMapping("/confirm")
+    public String confirmOrder(@RequestParam Long userId) {
+        User user = userRepository.getReferenceById(userId);
+        cartService.checkout(user); // Process the checkout (clear cart, reduce stock)
+        return "redirect:/cart/confirmation"; // Redirect to confirmation page
+    }
+
+    @GetMapping("/confirmation")
+    public String showConfirmationPage() {
+        return "confirmation"; // Return the confirmation page
     }
 
 }

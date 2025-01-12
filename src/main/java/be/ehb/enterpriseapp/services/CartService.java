@@ -66,4 +66,11 @@ public class CartService {
     public void removeCartItem(Long cartItemId) {
         cartItemRepository.deleteById(cartItemId);
     }
+
+    public double calculateTotalPrice(List<CartItem> cartItems) {
+        // Calculate total price
+        return cartItems.stream()
+                .mapToDouble(item -> item.getQuantity() * item.getProduct().getPrice())
+                .sum();
+    }
 }

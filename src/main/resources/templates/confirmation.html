@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head">
+    <title>Order Confirmation - Equipment Rental</title>
+</head>
+<body>
+<header th:replace="fragments/header :: header"></header>
+
+<main>
+    <h2>Order Confirmation</h2>
+    <p>Thank you for your order! We have received your request, and your items will be prepared shortly.</p>
+    <a th:href="@{/products}" class="btn">Back to Catalog</a>
+</main>
+
+</body>
+</html>
